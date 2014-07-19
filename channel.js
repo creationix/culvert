@@ -19,7 +19,9 @@ function makeChannel(bufferSize, monitor) {
   };
 
   function drain(callback) {
-    if (!callback) return drain;
+    if (typeof callback !== "function") {
+      throw new TypeError("callback must be function");
+    }
     if (dataQueue.length <= bufferSize) return callback();
     drainList.push(callback);
   }
@@ -38,7 +40,9 @@ function makeChannel(bufferSize, monitor) {
   }
 
   function take(callback) {
-    if (!callback) return take;
+    if (typeof callback !== "function") {
+      throw new TypeError("callback must be function");
+    }
     if (dataQueue.length) {
       var item = dataQueue.shift();
       if (monitor) monitor("take", item);
@@ -47,7 +51,7 @@ function makeChannel(bufferSize, monitor) {
         var list = drainList;
         drainList = [];
         for (var i = 0; i < list.length; i++) {
-          drainList[i]();
+          list[i]();
         }
       }
       return;

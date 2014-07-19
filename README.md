@@ -37,7 +37,7 @@ function connect(host, port) {
 }
 ```
 
-If you want/neet to preserve back-pressure and honor the buffer limit,
+If you want/need to preserve back-pressure and honor the buffer limit,
 make sure to wait for drain when `put` returns false.
 
 ```js

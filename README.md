@@ -1,7 +1,7 @@
 Culvert
 =======
 
-Channel for easy streaming or work between complex logics.
+Channel for easy streaming of work between complex logics.
 
 This is used in place of streams for CSP style flow.  I use it in js-git for network and file streams.
 

@@ -58,7 +58,6 @@ function makeChannel(bufferSize, monitor) {
 
 function log(name) {
   return function (type, value) {
-    if (type === "in") console.info(name, value);
-    // console.info(name, type, value);
+    console.info(name, type, value);
   };
 }

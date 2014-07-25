@@ -1,6 +1,6 @@
 {
   "name": "culvert",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Channel for easy streaming of work between complex logics.",
   "main": "channel.js",
   "scripts": {

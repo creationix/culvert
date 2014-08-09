@@ -21,8 +21,12 @@ function wrapNodeSocket(socket, options) {
   if (options.onError) socket.on("error", options.onError);
   socket.on("drain", wrap(onDrain, options.onError));
   socket.on("readable", wrap(onReadable, options.onError));
+  socket.on("end", wrap(onEnd, options.onError));
 
   function onTake(data) {
+    if (data === undefined) {
+      return socket.end();
+    }
     if (socket.write(data)) {
       outgoing.take(onTake);
     }
@@ -36,6 +40,10 @@ function wrapNodeSocket(socket, options) {
       paused = false;
       outgoing.take(onTake);
     }
+  }
+
+  function onEnd() {
+    incoming.put();
   }
 
   function onReadable() {

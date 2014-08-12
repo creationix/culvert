@@ -16,6 +16,7 @@ module.exports = function (channel, codec) {
 
   function decode(item) {
     buffer.push(item);
+    return buffer.length < 2;
   }
 
   function take(callback) {
@@ -23,6 +24,7 @@ module.exports = function (channel, codec) {
     if (buffer.length) {
       return callback(null, buffer.shift());
     }
+    // TODO: add trampoline so stack doesn't grow with large sync streams.
     channel.take(function (err, item) {
       if (err) return callback(err);
       try {

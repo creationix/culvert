@@ -12,8 +12,6 @@ function wrapNodeSocket(socket, reportError) {
   var onDrain2 = wrapHandler(onReadable, onError);
   onTake = wrapHandler(onTake, onError);
 
-  var codecs = [];
-
   var paused = false;
   var ended = false;
 
@@ -72,41 +70,10 @@ function wrapNodeSocket(socket, reportError) {
     }
   }
 
-  var originalOut = outgoing.put;
-  var originalInn = incoming.put;
-
-  function setCodecs() {
-    var out = originalOut;
-    var inn = originalInn;
-    codecs = [].slice.call(arguments);
-    for (var i = 0, l = arguments.length; i < l; ++i) {
-      var codec = arguments[i];
-      if (codec.encoder) out = codec.encoder(out);
-      if (codec.decoder) inn = codec.decoder(inn);
-    }
-    outgoing.put = out;
-    incoming.put = inn;
-  }
-
-  function getCodecs() {
-    return codecs;
-  }
-
-  function addCodec(codec) {
-    codecs.push(codec);
-    if (codec.encoder) outgoing.put = codec.encoder(outgoing.put);
-    if (codec.decoder) incoming.put = codec.decoder(incoming.put);
-  }
-
   return {
-    put: function (item) {
-      return outgoing.put(item);
-    },
+    put: outgoing.put,
     drain: outgoing.drain,
     take: incoming.take,
-    setCodecs: setCodecs,
-    getCodecs: getCodecs,
-    addCodec: addCodec,
   };
 }
 
